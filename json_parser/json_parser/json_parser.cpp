@@ -99,3 +99,163 @@ Token* JsonParser::parseBool() {
 	}
 	return token;
 }
+
+Token* JsonParser::parseNumber() {
+	const char    *numbers = "0123456789";
+	int            start = index_++;
+	std::size_t    i = json_.find_first_not_of( numbers, index_ );
+	bool           isFloat = false;
+
+	if ( json_[i] == '.' ) {
+	    isFloat = true;
+		i = json_.find_first_not_of( numbers, i + 1 );
+	}
+
+	std::string    nb = json_.substr( start, i - start );
+
+	index_ = i - 1;
+
+	if ( isFloat ) {
+	    return new TokenDouble( DOUBLE, atof( nb.c_str() ) );
+	}
+	else {
+		return new TokenInt( INTEGER, atoi( nb.c_str() ) );
+	}
+}
+
+Token* JsonParser::parseString() {
+	int      start = ++index_;
+
+	while ( index_ < json_.size() 
+		 && json_[index_] != '"'
+		 && json_[index_] != '\'' ) {
+	    index_++;
+	}
+
+	std::string s = json_.substr( start, index_ - start );
+
+	return new TokenString( STRING, s );
+}
+
+JsonArray* JsonParser::createArray() {
+	ArrayJEntity     array;
+	Token            expect( NULLPTR );
+
+	while ( true ) {
+		Token*       t = token();
+		if ( t == nullptr ) {
+			throw "end of file";
+		}
+
+
+		// we check if the token is the one we expected
+		if ( ( expect.type() != NULLPTR && t->type() != expect.type()
+			&& t->type() != CLOSE_BRACKET ) 
+			|| ( expect.type() != COMMA && t->type() == CLOSE_BRACKET ) ) {
+
+			std::string err = "createArray: Invalid token \"";
+			err += t->typeStr();
+			err += "\" when expected \"";
+			err += "\"";
+			throw std::invalid_argument( err );
+		}
+		switch ( t->type() ) {
+		case COMMA:
+			expect.setType( NULLPTR );
+			break;
+
+		// possible values
+		case STRING:
+			array.push_back( createString( t ) );
+			expect.setType( COMMA );
+			break;
+
+		case INTEGER:
+			array.push_back( createInt( t ) );
+			expect.setType( COMMA );
+			break;
+
+		case DOUBLE:
+			array.push_back( createDouble( t ) );
+			expect.setType( COMMA );
+			break;
+
+		case BOOLEAN:
+			array.push_back( createBool( t ) );
+			expect.setType( COMMA );
+			break;
+
+		case OPEN_BRACKET:
+			array.push_back( createArray() );
+			expect.setType( COMMA );
+			break;
+
+		case OPEN_BRACE:
+			array.push_back( createObject() );
+			expect.setType( COMMA );
+			break;
+
+		case CLOSE_BRACKET:
+			return new JsonArray( array );
+
+		// everything else is an error	
+		default:
+			std::string err = "createArray: Invalid token \"";
+			err += t->type();
+			err += "\"";
+			throw std::invalid_argument( err );
+		}
+	}
+}
+
+JsonObject* JsonParser::createObject() {
+	MapJEntity       object;
+	Token            expect( STRING );
+
+
+	// initialization of a new attribute
+	std::string      key;
+	JsonEntity*      value = nullptr;
+
+	while ( true ) {
+		Token*       t = token();
+
+		// we check if the token is the one we expeted
+		if ( ( expect.type() != NULLPTR && t->type() != expect.type() 
+			&& t->type() != CLOSE_BRACE )
+			|| ( expect.type() != COMMA && t->type() == CLOSE_BRACE ) ) {
+			
+			std::string err = "createArray: Invalid token \"";
+			err += t->typeStr();
+			err += "\" when expected \"";
+			err += "\"";
+			throw std::invalid_argument( err );
+		}
+
+		switch ( t->type() ) {
+		case COLON:
+			expect.setType( NULLPTR );
+			break;
+
+		case COMMA:
+			object[key] = value;
+			expect.setType( STRING );
+			break;
+
+		case STRING:
+			// if we expect a string then it's an identifier
+			if ( expect.type() == STRING ){
+			    key = ( ( TokenString*) t )->value();
+				expect.setType( COLON );
+			}
+			// if we didn't explicitly expected a STRING then, it's a value
+			else {
+				value = createString( t );
+				expect.setType( COMMA );
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
