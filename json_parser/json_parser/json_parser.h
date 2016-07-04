@@ -4,20 +4,10 @@
 
 #include "token.h"
 #include "token_primitive.h"
-
-
-
-template<typename T>
-class JsonPrimitive;
-
-class JsonArray;
-class JsonObject;
-class JsonEntity;
-
-typedef JsonPrimitive<std::string>       JsonString;
-typedef JsonPrimitive<int>               JsonInt;
-typedef JsonPrimitive<double>            JsonDouble;
-typedef JsonPrimitive<bool>              JsonBool;
+#include "json_array.h"
+#include "json_object.h"
+#include "json_object.h"
+#include "json_primitive.h"
 
 
 class JsonParser {

@@ -21,8 +21,10 @@ class JsonObject : public JsonEntity {
 
 	  // operator
 	  const JsonEntity&      operator[]( std::string key );
+
+	  friend std::ostream& operator<<( std::ostream& str, const JsonObject j_obj );
 };
 
-std::ostream& operator<<( std::ostream& str, const JsonObject j_obj );
+
 
 #endif

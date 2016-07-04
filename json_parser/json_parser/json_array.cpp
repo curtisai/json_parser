@@ -14,5 +14,9 @@ const JsonEntity& JsonArray::operator[]( int index ){
 }
 
 std::ostream& operator<<( std::ostream& str, const JsonArray j_array ){
-	return str << j_array.array();
+	str << " [ ";
+	for ( auto iter = j_array.array_.begin(); iter != j_array.array_.end(); ++iter ) {
+		str << ( *iter ) << " ";
+	}
+	return str << " ] ";
 }

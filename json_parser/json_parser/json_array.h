@@ -21,8 +21,10 @@ public:
 
 	// operators
 	const JsonEntity&       operator[]( int index );	
+
+	friend std::ostream& operator<<( std::ostream& str, const JsonArray j_array );
 };
 
-std::ostream& operator<<( std::ostream& str, const JsonArray j_array );
+
 
 #endif

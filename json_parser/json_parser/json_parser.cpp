@@ -3,7 +3,6 @@
 #include "json_array.h"
 #include "json_object.h"
 #include "json_parser.h"
-#include "json_entity.cpp"
 
 int               JsonParser::index_ = -1;
 std::string       JsonParser::json_ = "";

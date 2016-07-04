@@ -123,10 +123,11 @@ std::ostream& operator<<( std::ostream& str, const JsonEntity* entity ) {
 
 	switch ( entity->type() ) {
 	case JsonEntity::OBJECT:
-		return str << "obj";
+		return str << *((JsonObject*)entity);
+		
 
 	case JsonEntity::ARRAY:
-		return str << "array";
+		return str << *((JsonArray*)entity);
 
 	case JsonEntity::INTEGER:
 		return str << entity->asInt();

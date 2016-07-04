@@ -13,5 +13,9 @@ const JsonEntity& JsonObject::operator[]( std::string key ){
 }
 
 std::ostream& operator<<( std::ostream& str, const JsonObject j_obj ){
-	return str << "{ OBJ }";
+	str << " { ";
+	for ( auto iter = j_obj.attributes_.begin(); iter != j_obj.attributes_.end(); ++iter ) {
+		str << ( *iter ).first << " : " << ( *iter ).second << '\n';
+	}
+	return str << " } ";
 }

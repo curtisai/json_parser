@@ -27,6 +27,13 @@ int main() {
 
 	JsonEntity* result = JsonParser::fromString( test );
 	
+	JsonEntity first = ( *result )["glossary"];
+
+	std::cout << result;
+
+	JsonObject obj =  *( ( JsonObject* ) result );
+
+	
 
 	return 0;
 }
