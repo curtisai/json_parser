@@ -1,4 +1,6 @@
-#pragma once
+#ifndef JSON_PRIMITIVE
+#define JSON_PRIMITIVE
+
 
 #include "json_entity.h"
 #include <exception>
@@ -21,49 +23,18 @@ class JsonPrimitive : public JsonEntity {
 
 };
 
-template<typename T>
-JsonPrimitive<T>::JsonPrimitive( T value )
-	: JsonEntity( JsonEntity::UNKNOWN ),
-	  value_( value ){}
 
-template<>
-JsonPrimitive<int>::JsonPrimitive( int value )
-	: JsonEntity( JsonEntity::INTEGER ),
-	  value_( value ){}
-
-template<>
-JsonPrimitive<std::string>::JsonPrimitive( std::string value ) // const string&
-	: JsonEntity( JsonEntity::STRING ),
-	  value_( value ){}
-
-template<>
-JsonPrimitive<double>::JsonPrimitive( double value )
-	: JsonEntity( JsonEntity::DOUBLE ),
-	  value_( value ){}
-
-template<>
-JsonPrimitive<bool>::JsonPrimitive( bool value )
-	: JsonEntity( JsonEntity::BOOLEAN ),
-	  value_( value ){}
-
-
-// accessor
-template<typename T>
-const T JsonPrimitive<T>::value() const {
-    return value_;
-}
 
 template<typename T>
-std::ostream& operator<<( std::ostream& str, const JsonPrimitive<T>* prim ) {
-    return str << prim->value();
-}
+std::ostream& operator<<( std::ostream& str, const JsonPrimitive<T>* prim );
 
 template<>
-std::ostream& operator<<( std::ostream& str, const JsonPrimitive<std::string>* prim ) {
-	return str << "\"" << prim->value() << "\"";
-}
+std::ostream& operator<<( std::ostream& str, const JsonPrimitive<std::string>* prim );
 
 typedef JsonPrimitive<std::string>       JsonString;
 typedef JsonPrimitive<int>               JsonInt;
 typedef JsonPrimitive<double>            JsonDouble;
 typedef JsonPrimitive<bool>              JsonBool;
+
+#include "json_primitive.tpp"
+#endif

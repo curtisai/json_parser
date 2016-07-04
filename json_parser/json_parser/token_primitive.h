@@ -18,6 +18,11 @@ class TokenPrimitive : public Token {
 };
 
 template<typename T>
+TokenPrimitive<T>::TokenPrimitive( TokenType type, T value )
+	: Token( type ),
+	  value_( value ) {}
+
+template<typename T>
 T TokenPrimitive<T>::value() {
     return value_;
 }

@@ -1,11 +1,23 @@
-#pragma once
+#ifndef JSON_PARSER
+#define JSON_PARSER
 
-#include "json_array.h"
-#include "json_entity.h"
-#include "json_object.h"
-#include "json_primitive.h"
+
 #include "token.h"
 #include "token_primitive.h"
+
+
+
+template<typename T>
+class JsonPrimitive;
+
+class JsonArray;
+class JsonObject;
+class JsonEntity;
+
+typedef JsonPrimitive<std::string>       JsonString;
+typedef JsonPrimitive<int>               JsonInt;
+typedef JsonPrimitive<double>            JsonDouble;
+typedef JsonPrimitive<bool>              JsonBool;
 
 
 class JsonParser {
@@ -51,3 +63,5 @@ class JsonParser {
 
 	static JsonEntity*             fromString( const std::string& json );
 };
+
+#endif

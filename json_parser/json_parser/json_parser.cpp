@@ -1,5 +1,9 @@
-#include "json_parser.h"
+
 #include <exception>
+#include "json_array.h"
+#include "json_object.h"
+#include "json_parser.h"
+#include "json_entity.cpp"
 
 int               JsonParser::index_ = -1;
 std::string       JsonParser::json_ = "";
@@ -254,8 +258,77 @@ JsonObject* JsonParser::createObject() {
 				expect.setType( COMMA );
 			}
 			break;
-		default:
+
+		case INTEGER:
+			value = createInt( t );
+			expect.setType( COMMA );
 			break;
+
+		case DOUBLE:
+			value = createDouble( t );
+			expect.setType( COMMA );
+			break;
+
+		case OPEN_BRACKET:
+			value = createArray();
+			expect.setType( COMMA );
+			break;
+
+		case OPEN_BRACE:
+			value = createObject();
+			expect.setType( COMMA );
+			break;
+
+		case CLOSE_BRACE:
+			object[key] = value;
+			return new JsonObject( object );
+
+		default:
+			std::string err = "createArray: Invalid token \"";
+			err += t->typeStr();
+			err += "\"";
+			throw std::invalid_argument( err );
 		}
 	}
+}
+
+JsonInt* JsonParser::createInt( Token* token ) {
+	TokenInt*     t = ( TokenInt* ) token;
+	return new JsonInt( t->value() );
+}
+
+JsonBool* JsonParser::createBool( Token* token ) {
+    TokenBool*    t = ( TokenBool* ) token;
+	return new JsonBool( t->value() );
+}
+
+JsonDouble* JsonParser::createDouble( Token* token ) {
+	TokenDouble*  t = ( TokenDouble* ) token;
+	return new JsonDouble ( t->value() );
+}
+
+JsonString* JsonParser::createString( Token* token ) {
+	TokenString*  t = ( TokenString* ) token;
+	return new JsonString( t->value() );
+}
+
+JsonEntity* JsonParser::fromString( const std::string& json ) {
+	json_ = json;
+	index_ = -1;
+
+	Token     *t = token();
+
+	if ( t->type() == OPEN_BRACE ) {
+		return createObject();
+	}
+	else if ( t->type() == OPEN_BRACKET ) {
+		return createArray();
+	}
+	else {
+		std::string err = "createArray: Invalid token \"";
+		err += t->typeStr();
+		err += "\" at index 0";
+		throw std::invalid_argument( err );
+	}
+	return nullptr;
 }

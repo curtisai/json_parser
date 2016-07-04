@@ -12,3 +12,7 @@ const ArrayJEntity& JsonArray::array() const {
 const JsonEntity& JsonArray::operator[]( int index ){
     return *( array_[index] );
 }
+
+std::ostream& operator<<( std::ostream& str, const JsonArray j_array ){
+	return str << j_array.array();
+}

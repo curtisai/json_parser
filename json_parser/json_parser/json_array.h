@@ -1,6 +1,10 @@
-#pragma once
-#include "json_entity.h"
+#ifndef JSON_ARRAY
+#define JSON_ARRAY
+
+
 #include <vector>
+
+#include "json_entity.h"
 
 typedef std::vector<JsonEntity*>    ArrayJEntity;
 
@@ -10,7 +14,6 @@ private:
 
 public:
 
-	
 	JsonArray( ArrayJEntity array );
 
 	// accessors
@@ -20,6 +23,6 @@ public:
 	const JsonEntity&       operator[]( int index );	
 };
 
-std::ostream& operator<<( std::ostream& str, const JsonArray j_array ){
-    return str << j_array.array();
-}
+std::ostream& operator<<( std::ostream& str, const JsonArray j_array );
+
+#endif

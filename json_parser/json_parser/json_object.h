@@ -1,4 +1,6 @@
-#pragma once
+#ifndef JSON_OBJECT
+#define JSON_OBJECT
+
 #include <string>
 #include <map>
 #include "json_entity.h"
@@ -15,12 +17,12 @@ class JsonObject : public JsonEntity {
 	  JsonObject( MapJEntity attributes );
 
 	  // accessor
-	  const MapJEntity&      attributes() const;
+	  MapJEntity&      attributes() ;
 
 	  // operator
 	  const JsonEntity&      operator[]( std::string key );
 };
 
-std::ostream& operator<<( std::ostream& str, const JsonObject j_obj ){
-	return str << "{ OBJ }";
-}
+std::ostream& operator<<( std::ostream& str, const JsonObject j_obj );
+
+#endif

@@ -1,4 +1,8 @@
-#pragma once
+#ifndef JSON_ENTITY
+#define JSON_ENTITY
+
+
+
 
 #include <iostream>
 #include <string>
@@ -45,7 +49,7 @@ class JsonEntity{
 
 	// operators
 
-	const JsonEntity& operator[]( std::string& key ) const;
+	const JsonEntity& operator[]( const std::string& key ) const;
 	  // subscript operator for JsonObject
 	  // return the element from the object with the given key
 
@@ -90,25 +94,7 @@ class JsonEntity{
 	bool const                                   isObject() const;
 };
 
-std::ostream& operator<<( std::ostream& str, const JsonEntity* entity ) {
-	
-	switch ( entity->type() ) {
-	    case JsonEntity::OBJECT:
-			return str << "obj";
+std::ostream& operator<<( std::ostream& str, const JsonEntity* entity );
 
-		case JsonEntity::ARRAY:
-			return str << "array";
 
-		case JsonEntity::INTEGER:
-			return str << entity->asInt();
-
-		case JsonEntity::STRING:
-			return str << "\"" << entity->asString() << "\"";
-
-		case JsonEntity::BOOLEAN:
-			return str << entity->asString();
-
-    	default:
-			return str << "{ UNKNOWN ENTITY }";
-	}
-}
+#endif
