@@ -38,59 +38,59 @@ std::string JsonEntity::typeStr() const {
 }
 
 
-const JsonEntity& JsonEntity::operator[]( const std::string& key ) const {
+JsonEntity& JsonEntity::operator[]( const std::string key ) const {
 	if ( isObject() ) {
-		return *( ( ( JsonObject* ) this )->attributes()[key] );
+		return *dynamic_cast<const JsonObject* const>( this )->attributes().at(key);
 	}
 	throw "Entity is not an object";
 }
 
 const JsonEntity& JsonEntity::operator[]( int index ) const {
 	if ( isArray() ) {
-		return *( ( ( JsonArray* ) this )->array()[index] );
+		return *dynamic_cast<const JsonArray* const>( this )->array()[index];
+			
 	}
-
 	throw "Entity is not an array";
 }
 
 int const JsonEntity::asInt() const {
 	if ( isInt() ) {
-		return ( ( JsonInt* ) this )->value();
+		return dynamic_cast<const JsonInt  *const>(this)->value();
 	}
 	throw "Entity is not an int";
 }
 
 std::string const JsonEntity::asString() const {
 	if ( isString() ) {
-		return ( ( JsonString* ) this )->value();
+		return dynamic_cast<const JsonString* const>( this )->value();
 	}
 	throw "Entity is not a string";
 }
 
 double const JsonEntity::asDouble() const {
 	if ( isDouble() ) {
-		return ( ( JsonDouble* ) this )->value();
+		return dynamic_cast<const JsonDouble* const>( this )->value();
 	}
 	throw "Entity is not a string";
 }
 
 bool const JsonEntity::asBool() const {
 	if ( isBool() ) {
-		return ( ( JsonBool* ) this )->value();
+		return dynamic_cast<const JsonBool* const>( this )->value();
 	}
 	throw "Entity is not a boolean";
 }
 
 const std::vector<JsonEntity*>& JsonEntity::asArray() const {
 	if ( isArray() ) {
-		return ( ( JsonArray* ) this )->array();
+		return dynamic_cast<const JsonArray* const>( this )->array();
 	}
 	throw "Entity is not an array";
 }
 
 const std::map<std::string, JsonEntity*>& JsonEntity::asObject() const {
 	if ( isObject() ) {
-		return ( ( JsonObject* ) this )->attributes();
+		return dynamic_cast<const JsonObject* const>( this )->attributes();//( ( JsonObject* ) this )->attributes();
 	}
 	throw "Entity is not an object";
 }

@@ -1,7 +1,6 @@
 #ifndef JSON_PARSER
 #define JSON_PARSER
 
-
 #include "token.h"
 #include "token_primitive.h"
 #include "json_array.h"

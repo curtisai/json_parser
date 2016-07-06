@@ -17,10 +17,10 @@ class JsonObject : public JsonEntity {
 	  JsonObject( MapJEntity attributes );
 
 	  // accessor
-	  MapJEntity&      attributes() ;
+	  const MapJEntity&      attributes() const;
 
 	  // operator
-	  const JsonEntity&      operator[]( std::string key );
+	  const JsonEntity&      operator[]( const std::string& key ) const;
 
 	  friend std::ostream& operator<<( std::ostream& str, const JsonObject j_obj );
 };

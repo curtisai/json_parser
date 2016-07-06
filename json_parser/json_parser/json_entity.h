@@ -49,46 +49,46 @@ class JsonEntity{
 
 	// operators
 
-	const JsonEntity& operator[]( const std::string& key ) const;
+	JsonEntity& operator[]( const std::string key ) const;
 	  // subscript operator for JsonObject
 	  // return the element from the object with the given key
 
-	const JsonEntity& operator[]( int i ) const;
+	virtual const JsonEntity& operator[]( int i ) const;
 	  // subscript operator for JsonObject
 	  // return the element from the array at index i
 
 	// member functions
 
-	int const                                    asInt() const;
+	virtual int const                                    asInt() const;
 	  // return the value of the entity as an integer
 
-	std::string const                            asString() const;
+	virtual std::string const                            asString() const;
 	  // return the value of the entity as an string
 
-	double const                                 asDouble() const;
+	virtual double const                                 asDouble() const;
 	  // return the value of the entity as an double
 
-	bool const                                   asBool() const;
+	virtual bool const                                   asBool() const;
 	  // return the value of the entity as an boolean
 
-	const std::vector<JsonEntity*>&              asArray() const;
+	virtual const std::vector<JsonEntity*>&              asArray() const;
 	  // return the value of the entity as an object
 
-	const std::map<std::string, JsonEntity*>&    asObject() const;
+	virtual const std::map<std::string, JsonEntity*>&    asObject() const;
 
-	bool const                                   isInt() const;
+	virtual bool const                                   isInt() const;
 	  // return true if type is int
 
-	bool const                                   isString() const;
+	virtual bool const                                   isString() const;
 	  // return true if type is std::string
 
-	bool const                                   isDouble() const;
+	virtual bool const                                   isDouble() const;
 	  // return true if type is double
 
-	bool const                                   isBool() const;
+	virtual bool const                                   isBool() const;
 	  // return true if type is boolean
 
-	bool const                                   isArray() const;
+	virtual bool const                                   isArray() const;
 	  // return true if type is array
 
 	bool const                                   isObject() const;

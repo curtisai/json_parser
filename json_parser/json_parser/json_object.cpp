@@ -4,12 +4,12 @@ JsonObject::JsonObject( MapJEntity attributes )
 	: JsonEntity( JsonEntity::OBJECT ),
 	  attributes_( attributes ){}
 
-MapJEntity& JsonObject::attributes() {
+const MapJEntity& JsonObject::attributes() const {
     return attributes_;
 }
 
-const JsonEntity& JsonObject::operator[]( std::string key ){
-    return *( attributes_[key] );
+const JsonEntity& JsonObject::operator[]( const std::string& key ) const{
+    return *( attributes_.at(key) );
 }
 
 std::ostream& operator<<( std::ostream& str, const JsonObject j_obj ){
